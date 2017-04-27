@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <h1>Прашања со поврзување</h1>
+
+    <form ng-submit="vm4.save()">
+        <div class="form-group">
+            <label>Прашање</label>
+            <input class="form-control"
+                   type="text"
+                   ng-required="true"
+                   ng-model="vm4.entity.question">
+        </div>
+        <div class="form-group">
+            <label>Ниво</label>
+            <div ng-repeat="e in vm4.levels">
+                <input ng-model='vm4.entity.level'
+                       type="radio"
+                       ng-value={{e}}>{{e.level}}</input>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Болест</label>
+            <div ng-repeat="e in vm4.possibleDiseases">
+                <input ng-model='vm4.entity.disease' type="radio" ng-value={{e}}>{{e.name}}</input>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Фрази за поврзување</label>
+
+            <table class="table">
+                <tr>
+                    <td><input ng-model="vm4.phraseOne[0]" type="text" class="form-control"/></td>
+                    <td align="center"><span class="glyphicon glyphicon-resize-horizontal" style="padding-top: 10px"></span></td>
+                    <td><input ng-model="vm4.phraseTwo[0]" type="text" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><input ng-model="vm4.phraseOne[1]" type="text" class="form-control"/></td>
+                    <td align="center"><span class="glyphicon glyphicon-resize-horizontal" style="padding-top: 10px"></span></td>
+                    <td><input ng-model="vm4.phraseTwo[1]" type="text" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><input ng-model="vm4.phraseOne[2]" type="text" class="form-control"/></td>
+                    <td align="center"><span class="glyphicon glyphicon-resize-horizontal" style="padding-top: 10px"></span></td>
+                    <td><input ng-model="vm4.phraseTwo[2]" type="text" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><input ng-model="vm4.phraseOne[3]" type="text" class="form-control"/></td>
+                    <td align="center"><span class="glyphicon glyphicon-resize-horizontal" style="padding-top: 10px"></span></td>
+                    <td><input ng-model="vm4.phraseTwo[3]" type="text" class="form-control"/></td>
+                </tr>
+            </table>
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Внеси">
+    </form>
+
+    <br/>
+
+    <table ng-show="vm4.entities.length>0" class="table table-bordered table-striped">
+        <tr>
+            <th>Прашање</th>
+            <th>Ниво</th>
+            <th>Болест</th>
+            <th>Фрази</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="e in vm4.entities" ng-show="e.questionType=='CONNECTING_PHRASES'">
+            <td>{{e.question}}</td>
+            <td>{{e.level.level}}</td>
+            <td>{{e.disease.name}}</td>
+            <td>
+                <p ng-repeat="i in vm4.connectingEntities" ng-show="i.question.id==e.id">
+                    {{i.phraseOne}} <span class="glyphicon glyphicon-resize-horizontal" style="color: cornflowerblue"></span> {{i.phraseTwo}}
+                </p>
+            </td>
+            <td>
+                <button class="btn btn-xs btn-default"
+                        ng-click="vm4.edit(e)">
+                    Измени
+                </button>
+                <button class="btn btn-xs btn-danger"
+                        ng-click="vm4.remove(e)">
+                    Отстрани
+                </button>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

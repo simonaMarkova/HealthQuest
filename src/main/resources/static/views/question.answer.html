@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Прашања</title>
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>Прашања со одговори</h1>
+
+        <form ng-submit="vm.save()">
+            <div class="form-group">
+                <label>Прашање</label>
+                <input class="form-control"
+                       type="text"
+                       ng-required="true"
+                       ng-model="vm.question.question">
+            </div>
+            <div class="form-group">
+                <label>Ниво</label>
+                <div ng-repeat="e in vm.levels">
+                    <input ng-model='vm.question.level'
+                           type="radio"
+                           ng-value={{e}}>{{e.level}}</input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Болест</label>
+                <div ng-repeat="e in vm.possibleDiseases">
+                    <input ng-model='vm.question.disease'
+                           type="radio"
+                           ng-value={{e}}>{{e.name}}</input>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Одговори</label>
+
+                <table class="table table-bordered table-striped">
+                    <tr ng-repeat="e in vm.possibleAnswers track by $index">
+                        <td>
+                            <input ng-model='vm.answers[$index]' type="checkbox" value="{{ e.id }}">{{e.description}}</input>
+                        </td>
+                        <td>
+                            <input ng-model='vm.answerStatus[$index]' type="checkbox">Точен одговор</input>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <br/>
+            <input class="btn btn-primary" type="submit" value="Внеси">
+        </form>
+
+        <br/>
+
+        <table ng-show="vm.questions.length>0" class="table table-bordered table-striped">
+            <tr>
+                <th>Прашање</th>
+                <th>Ниво</th>
+                <th>Болест</th>
+                <th>Одговори</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="e in vm.questions" ng-show="e.questionType=='ANSWER_SELECT'">
+                <td>{{e.question}}</td>
+                <td>{{e.level.level}}</td>
+                <td>{{e.disease.name}}</td>
+                <td>
+                    <p ng-repeat="i in vm.myAnswers" ng-show="i.question.id==e.id">
+                        {{i.answer.description}} -
+                        <span ng-show="i.status==true">Точен одговор</span>
+                        <span ng-show="i.status==false">Неточен одговор</span>
+                    </p>
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-default"
+                            ng-click="vm.edit(e)">
+                        Измени
+                    </button>
+                    <button class="btn btn-xs btn-danger"
+                            ng-click="vm.remove(e)">
+                        Отстрани
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
+
+</body>
+</html>

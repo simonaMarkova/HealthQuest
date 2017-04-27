@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Одговори</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Одговори</h1>
+        <form ng-submit="vm1.save()">
+            <div class="form-group">
+                <label>Одговор</label>
+                <input class="form-control"
+                       type="text"
+                       ng-required="true"
+                       ng-model="vm1.entity.description">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Внеси">
+        </form>
+
+        <br/>
+
+        <table ng-show="vm1.entities.length>0" class="table table-bordered table-striped">
+            <tr>
+                <th>Одговор</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="e in vm1.entities">
+                <td>{{e.description}}</td>
+                <td>
+                    <button class="btn btn-xs btn-default"
+                            ng-click="vm1.edit(e)">
+                        Измени
+                    </button>
+                    <button class="btn btn-xs btn-danger"
+                            ng-click="vm1.remove(e)">
+                        Отстрани
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</body>
+</html>

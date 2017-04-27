@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Болести</h1>
+        <form ng-submit="vm3.save()">
+            <div class="form-group">
+                <label>Болест</label>
+                <input class="form-control"
+                       type="text"
+                       ng-required="true"
+                       ng-model="vm3.entity.name">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Внеси">
+        </form>
+
+        <br/>
+
+        <table ng-show="vm3.entities.length>0" class="table table-bordered table-striped">
+            <tr>
+                <th>Болест</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="e in vm3.entities">
+                <td>{{e.name}}</td>
+                <td>
+                    <button class="btn btn-xs btn-default"
+                            ng-click="vm3.edit(e)">
+                        Измени
+                    </button>
+                    <button class="btn btn-xs btn-danger"
+                            ng-click="vm3.remove(e)">
+                        Отстрани
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

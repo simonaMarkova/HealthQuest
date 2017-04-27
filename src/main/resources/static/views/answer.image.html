@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Прашања</title>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Одговори-слика</h1>
+
+    <form ng-submit="vm7.save()" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Прашање</label>
+            <input class="form-control"
+                   type="text"
+                   ng-required="true"
+                   ng-model="vm7.question.question">
+        </div>
+        <div class="form-group">
+            <label>Ниво</label>
+            <div ng-repeat="e in vm7.levels">
+                <input ng-model='vm7.question.level'
+                       type="radio"
+                       ng-value={{e}}>{{e.level}}</input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Болест</label>
+            <div ng-repeat="e in vm7.possibleDiseases">
+                <input ng-model='vm7.question.disease'
+                       type="radio"
+                       ng-value={{e}}>{{e.name}}</input>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Слики</label>
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td><input type="file" name="file" ng-model="document.fileInput" id="file" /></td>
+                    <td>
+                        <input ng-model='vm7.imageStatus[0]' type="checkbox">Точен одговор</input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="file" name="file" ng-model="document.fileInput1" id="file1" /></td>
+                    <td>
+                        <input ng-model='vm7.imageStatus[1]' type="checkbox">Точен одговор</input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="file" name="file" ng-model="document.fileInput2" id="file2" /></td>
+                    <td>
+                        <input ng-model='vm7.imageStatus[2]' type="checkbox">Точен одговор</input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="file" name="file" ng-model="document.fileInput3" id="file3" /></td>
+                    <td>
+                        <input ng-model='vm7.imageStatus[3]' type="checkbox">Точен одговор</input>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br/>
+        <input class="btn btn-primary" type="submit" value="Внеси">
+    </form>
+
+    <br/>
+
+    <table ng-show="vm7.questions.length>0" class="table table-bordered table-striped">
+        <tr>
+            <th>Прашање</th>
+            <th>Ниво</th>
+            <th>Болест</th>
+            <th>Слики</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="e in vm7.questions" ng-show="e.questionType=='MULTIPLE_IMAGE_SELECT'">
+            <td>{{e.question}}</td>
+            <td>{{e.level.level}}</td>
+            <td>{{e.disease.name}}</td>
+            <td>
+                <p ng-repeat="i in vm7.myAnswers" ng-show="i.question.id==e.id">
+                    {{i.imageUrl}} -
+                    <span ng-show="i.status==true">Точен одговор</span>
+                    <span ng-show="i.status==false">Неточен одговор</span>
+                </p>
+            </td>
+            <td>
+                <button class="btn btn-xs btn-default"
+                        ng-click="vm7.edit(e)">
+                    Измени
+                </button>
+                <button class="btn btn-xs btn-danger"
+                        ng-click="vm7.remove(e)">
+                    Отстрани
+                </button>
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+
+</body>
+</html>

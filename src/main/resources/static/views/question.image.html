@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Прашања</title>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Прашања-слика</h1>
+
+    </br>
+    <form ng-submit="vm6.save()" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Прашање</label>
+            <input class="form-control"
+                   type="text"
+                   ng-required="true"
+                   ng-model="vm6.question.question">
+        </div>
+        <div class="form-group">
+            <label>Слика</label>
+            <input type="file" name="file" ng-model="document.fileInput" id="file" />
+        </div>
+        <div class="form-group">
+            <label>Ниво</label>
+            <div ng-repeat="e in vm6.levels">
+                <input ng-model='vm6.question.level'
+                       type="radio"
+                       ng-value={{e}}>{{e.level}}</input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Болест</label>
+            <div ng-repeat="e in vm6.possibleDiseases">
+                <input ng-model='vm6.question.disease'
+                       type="radio"
+                       ng-value={{e}}>{{e.name}}</input>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Одговори</label>
+
+            <table class="table table-bordered table-striped">
+                <tr ng-repeat="e in vm6.possibleAnswers track by $index">
+                    <td>
+                        <input ng-model='vm6.answers[$index]' type="checkbox" value="{{ e.id }}">{{e.description}}</input>
+                    </td>
+                    <td>
+                        <input ng-model='vm6.answerStatus[$index]' type="checkbox">Точен одговор</input>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br/>
+        <input class="btn btn-primary" type="submit" value="Внеси">
+    </form>
+
+    <br/>
+
+    <table ng-show="vm6.questions.length>0" class="table table-bordered table-striped">
+        <tr>
+            <th>Прашање</th>
+            <th>Слика</th>
+            <th>Ниво</th>
+            <th>Болест</th>
+            <th>Одговори</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="e in vm6.questions" ng-show="e.questionType=='IMAGE_SELECT'">
+            <td>{{e.question}}</td>
+            <td><p ng-repeat="p in vm6.images" ng-show="e.id==p.question.id">
+                {{p.imageUrl}}
+            </p></td>
+            <td>{{e.level.level}}</td>
+            <td>{{e.disease.name}}</td>
+            <td>
+                <p ng-repeat="i in vm6.myAnswers" ng-show="i.question.id==e.id">
+                    {{i.answer.description}} -
+                    <span ng-show="i.status==true">Точен одговор</span>
+                    <span ng-show="i.status==false">Неточен одговор</span>
+                </p>
+            </td>
+            <td>
+                <button class="btn btn-xs btn-default"
+                        ng-click="vm6.edit(e)">
+                    Измени
+                </button>
+                <button class="btn btn-xs btn-danger"
+                        ng-click="vm6.remove(e)">
+                    Отстрани
+                </button>
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+
+</body>
+</html>
