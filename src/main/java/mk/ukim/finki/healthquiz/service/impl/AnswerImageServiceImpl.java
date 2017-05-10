@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by user on 20.4.2017.
@@ -64,16 +65,17 @@ public class AnswerImageServiceImpl implements AnswerImageService {
         }
 
         try{
-            //           String uploadsDir = "/uploads/";
-//            String realPathtoUploads = String.format("%s//%s//", dataFolder, username);
-//            if (!new File(realPathtoUploads). exists()) {
-//                new File(realPathtoUploads).mkdir( );
-//            }
+            if (!new File(URL_PATTERN). exists()) {
+                new File(URL_PATTERN).mkdir( );
+            }
 
             String orgName = file.getOriginalFilename();
+            String ext = orgName.split("\\.")[1];
 
-            String filePath = orgName;
-            destLocation = String.format(URL_PATTERN+filePath);
+            String newNamePart1 = UUID.randomUUID().toString();
+            String newNamePart2 = UUID.randomUUID().toString();
+            String newName = String.format("%s-%s.%s", newNamePart1, newNamePart2, ext);
+            destLocation = String.format(URL_PATTERN+newName);
 
             File dest = new File(destLocation);
             file.transferTo(dest);
