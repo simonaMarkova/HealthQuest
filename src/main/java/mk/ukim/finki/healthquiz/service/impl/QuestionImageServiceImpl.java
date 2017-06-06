@@ -4,6 +4,7 @@ import mk.ukim.finki.healthquiz.models.QuestionImage;
 import mk.ukim.finki.healthquiz.persistance.QuestionImageRepository;
 import mk.ukim.finki.healthquiz.service.QuestionImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +18,11 @@ import java.util.UUID;
 @Service
 public class QuestionImageServiceImpl implements QuestionImageService{
 
+
+    @Value("file_upload_resource")
+    private String fileUploadResource;
+
     public final QuestionImageRepository questionImageRepository;
-    private static final String URL_PATTERN="C:\\Users\\user\\Documents\\healthQuestPictures\\imageSelect\\";
 
     @Autowired
     public QuestionImageServiceImpl(QuestionImageRepository  questionImageRepository)
@@ -66,8 +70,8 @@ public class QuestionImageServiceImpl implements QuestionImageService{
         }
 
         try{
-            if (!new File(URL_PATTERN). exists()) {
-                new File(URL_PATTERN).mkdir( );
+            if (!new File(fileUploadResource). exists()) {
+                new File(fileUploadResource).mkdir( );
             }
 
             String orgName = file.getOriginalFilename();
@@ -76,7 +80,7 @@ public class QuestionImageServiceImpl implements QuestionImageService{
             String newNamePart1 = UUID.randomUUID().toString();
             String newNamePart2 = UUID.randomUUID().toString();
             String newName = String.format("%s-%s.%s", newNamePart1, newNamePart2, ext);
-            destLocation = String.format(URL_PATTERN+newName);
+            destLocation = String.format(fileUploadResource+newName);
 
             File dest = new File(destLocation);
             file.transferTo(dest);

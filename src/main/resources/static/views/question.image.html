@@ -73,7 +73,7 @@
         <tr ng-repeat="e in vm6.questions" ng-show="e.questionType=='IMAGE_SELECT'">
             <td>{{e.question}}</td>
             <td><p ng-repeat="p in vm6.images" ng-show="e.id==p.question.id">
-                {{p.imageUrl}}
+                <img ng-src="{{p.imageUrl}}" class="img-responsive">
             </p></td>
             <td>{{e.level.level}}</td>
             <td>{{e.disease.name}}</td>

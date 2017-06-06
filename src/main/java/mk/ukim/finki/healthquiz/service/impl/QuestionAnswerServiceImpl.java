@@ -4,6 +4,7 @@ import mk.ukim.finki.healthquiz.models.QuestionAnswer;
 import mk.ukim.finki.healthquiz.persistance.QuestionAnswerRepository;
 import mk.ukim.finki.healthquiz.service.QuestionAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
  */
 @Service
 public class QuestionAnswerServiceImpl implements QuestionAnswerService {
+
+
 
     public final QuestionAnswerRepository questionAnswerRepository;
 
