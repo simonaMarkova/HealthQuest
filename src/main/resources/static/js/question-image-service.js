@@ -9,7 +9,7 @@ QuestionImageServiceFn.$inject = ['$http', '$q'];
 /* @ngInject */
 function QuestionImageServiceFn($http, $q) {
 
-    var URL = 'http://localhost:7778/questionImage/';
+    var URL = '/questionImage/';
 
     var service = {
         save: saveFn,

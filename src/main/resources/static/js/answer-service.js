@@ -8,7 +8,7 @@ AnswerServiceFn.$inject = ['$http', '$q'];
 /* @ngInject */
 function AnswerServiceFn($http, $q) {
 
-    var URL = 'http://localhost:7778/answer/';
+    var URL = '/answer/';
 
     var service = {
         save: saveFn,
