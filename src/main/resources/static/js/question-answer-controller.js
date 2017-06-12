@@ -12,6 +12,7 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
     vm.clear = clear;
     vm.edit = edit;
     vm.remove = remove;
+    vm.increase = increase;
 
     vm.proba = [];
     vm.question = {};
@@ -23,23 +24,32 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
     vm.myAnswers = [];
     vm.levels = [];
 
+    vm.page = 0;
+
     loadQuestions();
     loadAnswers();
     loadDiseases();
-    loadMyAnswers();
     loadLevels();
 
     function loadQuestions() {
-        questionService.getByQuestionType("ANSWER_SELECT").then(function (data) {
-            vm.questions = data;
+        questionService.getByPage("ANSWER_SELECT",0).then(function (data) {
+            vm.page =0;
+            vm.myAnswers = [];
+            vm.questions = data.content;
+
+            for(var $i in vm.questions)
+            {
+                questionAnswerService.getByQuestionId(vm.questions[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.myAnswers.push(data[$j]);
+                    }
+                });
+            }
         });
     }
 
-    function loadMyAnswers(){
-        questionAnswerService.getAll().then(function (data) {
-            vm.myAnswers = data;
-        });
-    }
 
     function loadAnswers() {
         answerService.getAll().then(function (data) {
@@ -70,7 +80,7 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
             {
                 if(vm.myAnswers[i].question.id == vm.question.id)
                 {
-                   questionAnswerService.remove(vm.myAnswers[i]);
+                    questionAnswerService.remove(vm.myAnswers[i]);
                 }
             }
         }
@@ -94,8 +104,9 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
                     }
                 }
                 clear();
-                loadMyAnswers();
+
                 loadQuestions();
+
             }
             function errorCallback(data) {
             }
@@ -135,10 +146,32 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
     function remove(entity) {
         questionService.remove(entity)
             .then(function () {
-                loadMyAnswers();
                 loadQuestions();
             });
-}
+    }
+
+    function increase() {
+        vm.page ++;
+        questionService.getByPage("ANSWER_SELECT",vm.page).then(function (data) {
+
+            for(var $i in data.content)
+            {
+                vm.questions.push(data.content[$i]);
+            }
+
+
+            for(var $i in data.content)
+            {
+                questionAnswerService.getByQuestionId(data.content[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.myAnswers.push(data[$j]);
+                    }
+                });
+            }
+        });
+    }
 
 
 

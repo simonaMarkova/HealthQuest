@@ -1,9 +1,11 @@
 package mk.ukim.finki.healthquiz.resources;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import mk.ukim.finki.healthquiz.models.AnswerImage;
 import mk.ukim.finki.healthquiz.models.Question;
 import mk.ukim.finki.healthquiz.service.AnswerImageService;
 import mk.ukim.finki.healthquiz.service.QuestionService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -123,6 +127,61 @@ public class AnswerImageResource implements ApplicationContextAware {
     @RequestMapping(value = "/getByQuestion/{id}", method = RequestMethod.GET)
     public List<AnswerImage> getByQuestionId(@PathVariable Long id) {
         return service.findByQuestionId(id);
+    }
+
+    @RequestMapping(value = "/getImage/{id}/{number}", method = RequestMethod.GET)
+    @ResponseBody
+    public void getImageByQuestionId(@PathVariable Long id,@PathVariable int number, HttpServletResponse response) throws IOException, SQLException {
+
+        List<AnswerImage> answerImages = service.findByQuestionId(id);
+        if(answerImages.size()>=0)
+        {
+            for (AnswerImage image:answerImages) {
+                if(image.number == number)
+                {
+                    InputStream in = null;
+                    OutputStream out = null;
+
+                    File file = new File(image.imageUrl);
+                    String contentDisposition = String.format("inline;filename=\"%s\"",
+                            file.getName() + "?questionId=" + id + "number="+number);
+                    byte fileContent[] = new byte[(int)file.length()];
+
+                    try {
+
+                        in = new FileInputStream(file);
+                        out = response.getOutputStream();
+
+
+                        in.read(fileContent);
+                        ByteInputStream bin = new ByteInputStream(fileContent, fileContent.length);
+
+                        response.setHeader("Content-Disposition", contentDisposition);
+                        response.setContentType(Files.probeContentType(file.toPath()));
+                        response.setContentLength((int) file.length());
+
+                        IOUtils.copy(bin, out);
+
+                    }
+                    catch (IOException e) {
+
+                    }
+                    finally {
+                        if(in!=null) {
+                            in.close();
+                        }
+                        if(out!=null)
+                        {
+                            out.flush();
+                            out.close();
+                        }
+                    }
+                }
+            }
+
+        }
+
+
     }
 
 }

@@ -56,4 +56,9 @@ public class QuestionConnectiongResource implements ApplicationContextAware {
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
     }
+
+    @RequestMapping(value = "/getByQuestion/{id}", method = RequestMethod.GET)
+    public List<QuestionConnecting> getByQuestionId(@PathVariable Long id) {
+        return service.findByQuestionId(id);
+    }
 }

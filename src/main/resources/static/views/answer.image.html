@@ -86,7 +86,7 @@
             <td>{{e.disease.name}}</td>
             <td>
                 <p ng-repeat="i in vm7.myAnswers" ng-show="i.question.id==e.id">
-                    {{i.imageUrl}} -
+                    <img ng-src="/answerImage/getImage/{{i.question.id}}/{{i.number}}" style="height: 50px;width: 50px"> -
                     <span ng-show="i.status==true">Точен одговор</span>
                     <span ng-show="i.status==false">Неточен одговор</span>
                 </p>
@@ -101,6 +101,9 @@
                     Отстрани
                 </button>
             </td>
+        </tr>
+        <tr>
+            <td colspan="5" align="center"><button class="btn btn-xs btn-success" ng-click="vm7.increase()">Прегледај повеќе</button></td>
         </tr>
     </table>
 

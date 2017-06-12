@@ -9,7 +9,7 @@ LevelServiceFn.$inject = ['$http', '$q'];
 /* @ngInject */
 function LevelServiceFn($http, $q) {
 
-    var URL = 'http://localhost:7778/level/';
+    var URL = '/level/';
 
     var service = {
         save: saveFn,

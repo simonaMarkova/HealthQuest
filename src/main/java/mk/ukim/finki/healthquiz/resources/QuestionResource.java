@@ -2,11 +2,13 @@ package mk.ukim.finki.healthquiz.resources;
 
 import mk.ukim.finki.healthquiz.enumeration.QuestionType;
 import mk.ukim.finki.healthquiz.models.Question;
+import mk.ukim.finki.healthquiz.service.QueryService;
 import mk.ukim.finki.healthquiz.service.QuestionService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +28,12 @@ public class QuestionResource implements ApplicationContextAware {
     }
 
     private QuestionService service;
+    private QueryService queryService;
 
     @Autowired
-    public QuestionResource(QuestionService service) {
+    public QuestionResource(QuestionService service, QueryService queryService) {
         this.service = service;
+        this.queryService = queryService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -62,5 +66,10 @@ public class QuestionResource implements ApplicationContextAware {
     public List<Question> getByType(@PathVariable QuestionType type){
         List<Question> list = service.findByQuestionType(type);
         return list;
+    }
+
+    @RequestMapping(value = "/page/{type}/{page}", method = RequestMethod.GET)
+    public Page<Question> getByPage(@PathVariable QuestionType type, @PathVariable int page) {
+        return queryService.getByPage(type, page, 10);
     }
 }

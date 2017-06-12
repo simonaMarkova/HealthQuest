@@ -8,7 +8,7 @@ QuestionServiceFn.$inject = ['$http', '$q'];
 /* @ngInject */
 function QuestionServiceFn($http, $q) {
 
-    var URL = 'http://localhost:7778/question/';
+    var URL = '/question/';
 
     var service = {
         save: saveFn,
@@ -16,7 +16,8 @@ function QuestionServiceFn($http, $q) {
         getById: getByIdFn,
         getAll: getAllFn,
         remove: removeFn,
-        getByQuestionType: getByQuestionTypeFn
+        getByQuestionType: getByQuestionTypeFn,
+        getByPage: getByPageFn
     };
     return service;
 
@@ -93,6 +94,20 @@ function QuestionServiceFn($http, $q) {
     function removeFn(entity) {
         var deferred = $q.defer();
         $http.delete(URL+entity.id)
+            .then(
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+        return deferred.promise;
+    }
+
+    function getByPageFn(type, page) {
+        var deferred = $q.defer();
+        $http.get(URL+'page/'+type +'/'+page)
             .then(
                 function (response) {
                     deferred.resolve(response.data);

@@ -9,14 +9,15 @@ QuestionImageServiceFn.$inject = ['$http', '$q'];
 /* @ngInject */
 function QuestionImageServiceFn($http, $q) {
 
-    var URL = 'http://localhost:7778/questionImage/';
+    var URL = '/questionImage/';
 
     var service = {
         save: saveFn,
         update: updateFn,
         getById: getByIdFn,
         getAll: getAllFn,
-        remove: removeFn
+        remove: removeFn,
+        getByQuestionId: getByQuestionIdFn
     };
     return service;
 
@@ -86,6 +87,20 @@ function QuestionImageServiceFn($http, $q) {
                     deferred.resolve(response.data);
                 },
                 function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+        return deferred.promise;
+    }
+
+    function getByQuestionIdFn(id) {
+        var deferred = $q.defer();
+        $http.get(URL + "getByQuestion/" + id)
+            .then(
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                function (errResponse) {
                     deferred.reject(errResponse);
                 }
             );
