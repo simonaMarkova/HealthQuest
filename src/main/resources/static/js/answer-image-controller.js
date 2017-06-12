@@ -13,13 +13,16 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
     vm.clear = clear;
     vm.edit = edit;
     vm.remove = remove;
+    vm.increase = increase;
+
+    vm.page = 0;
 
     vm.question = {};
     vm.questions = [];
     vm.imageStatus = [];
     vm.myAnswers = [];
     vm.levels = [];
-    //vm.allImages = [];
+
     var file;
     var file1;
     var file2;
@@ -27,18 +30,24 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
 
     loadQuestions();
     loadDiseases();
-    loadMyAnswers();
     loadLevels();
 
     function loadQuestions() {
-        questionService.getByQuestionType("MULTIPLE_IMAGE_SELECT").then(function (data) {
-            vm.questions = data;
-        });
-    }
+        questionService.getByPage("MULTIPLE_IMAGE_SELECT",0).then(function (data)  {
+            vm.page =0;
+            vm.myAnswers = [];
+            vm.questions = data.content;
 
-    function loadMyAnswers(){
-        answerImageService.getAll().then(function (data) {
-            vm.myAnswers = data;
+            for(var $i in vm.questions)
+            {
+                answerImageService.getByQuestionId(vm.questions[$i].id).then(function (data) {
+                    for(var $j in data)
+                    {
+                        vm.myAnswers.push(data[$j]);
+                    }
+
+                });
+            }
         });
     }
 
@@ -92,7 +101,7 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
                     }
                     $http({
                         method: 'POST',
-                        url:  'http://localhost:7778/answerImage/',
+                        url:  '/answerImage/',
                         headers: { 'Content-Type': undefined},
                         data:  formData
                     }).success(function(data, status) {
@@ -115,7 +124,7 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
                     }
                     $http({
                         method: 'POST',
-                        url:  'http://localhost:7778/answerImage/',
+                        url:  '/answerImage/',
                         headers: { 'Content-Type': undefined},
                         data:  formData
                     }).success(function(data, status) {
@@ -138,7 +147,7 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
                     }
                     $http({
                         method: 'POST',
-                        url:  'http://localhost:7778/answerImage/',
+                        url:  '/answerImage/',
                         headers: { 'Content-Type': undefined},
                         data:  formData
                     }).success(function(data, status) {
@@ -161,7 +170,7 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
                     }
                     $http({
                         method: 'POST',
-                        url:  'http://localhost:7778/answerImage/',
+                        url:  '/answerImage/',
                         headers: { 'Content-Type': undefined},
                         data:  formData
                     }).success(function(data, status) {
@@ -171,7 +180,6 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
                     });
                 }
                 clear();
-                loadMyAnswers();
                 loadQuestions();
             }
             function errorCallback(data) {
@@ -184,7 +192,6 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
     function clear() {
         vm.question = {};
         vm.imageStatus = [];
-        vm.images = [];
     }
 
     function edit(entity) {
@@ -195,11 +202,31 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
     function remove(entity) {
         questionService.remove(entity)
             .then(function () {
-                loadMyAnswers();
                 loadQuestions();
             });
     }
 
+    function increase() {
+        vm.page ++;
+        questionService.getByPage("MULTIPLE_IMAGE_SELECT",vm.page).then(function (data) {
 
+            for(var $i in data.content)
+            {
+                vm.questions.push(data.content[$i]);
+            }
+
+            for(var $i in data.content)
+            {
+                answerImageService.getByQuestionId(data.content[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.myAnswers.push(data[$j]);
+                    }
+                });
+            }
+        });
+
+    }
 
 }

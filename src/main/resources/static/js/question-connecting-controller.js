@@ -12,6 +12,7 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
     vm.clear = clear;
     vm.edit = edit;
     vm.remove = remove;
+    vm.increase = increase;
 
     vm.entity = {};
     vm.entities = [];
@@ -21,26 +22,34 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
     vm.connectingEntity = {};
     vm.levels = [];
 
-    loadConnections();
+    vm.page = 0;
+
     loadQuestions();
     loadDiseases();
     loadLevels();
 
     function loadQuestions() {
-        questionService.getByQuestionType("CONNECTING_PHRASES").then(function (data) {
-            vm.entities = data;
+        questionService.getByPage("CONNECTING_PHRASES",0).then(function (data) {
+            vm.page =0;
+            vm.connectingEntities = [];
+            vm.entities = data.content;
+
+            for(var $i in vm.entities)
+            {
+                questionConnectingService.getByQuestionId(vm.entities[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.connectingEntities.push(data[$j]);
+                    }
+                });
+            }
         });
     }
 
     function loadDiseases() {
         diseaseService.getAll().then(function (data) {
             vm.possibleDiseases = data;
-        })
-    }
-
-    function loadConnections() {
-        questionConnectingService.getAll().then(function (data) {
-            vm.connectingEntities = data;
         })
     }
 
@@ -58,11 +67,11 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
         }
         if(vm.entity.id != undefined)
         {
-            for(var i in vm.connectingEntities)
+            for(var $i in vm.connectingEntities)
             {
-                if(vm.connectingEntities[i].question.id == vm.entity.id)
+                if(vm.connectingEntities[$i].question.id == vm.entity.id)
                 {
-                    questionConnectingService.remove(vm.connectingEntities[i]);
+                    questionConnectingService.remove(vm.connectingEntities[$i]);
                 }
             }
         }
@@ -71,7 +80,8 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
             var promise = questionService.save(vm.entity);
             promise.then(successCallback, errorCallback);
             function successCallback(object) {
-                if(vm.phraseOne[0] != undefined && vm.phraseTwo[0] != undefined)
+
+                if((vm.phraseOne[0] != '' && vm.phraseTwo[0] != '') && (vm.phraseOne[0] != null && vm.phraseTwo[0] != null))
                 {
                     vm.connectingEntity = {};
                     vm.connectingEntity.phraseOne = vm.phraseOne[0];
@@ -80,7 +90,7 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
 
                     questionConnectingService.save(vm.connectingEntity);
                 }
-                if(vm.phraseOne[1] != undefined && vm.phraseTwo[1] != undefined)
+                if((vm.phraseOne[1] != '' && vm.phraseTwo[1] != '') && (vm.phraseOne[1] != null && vm.phraseTwo[1] != null))
                 {
                     vm.connectingEntity = {};
                     vm.connectingEntity.phraseOne = vm.phraseOne[1];
@@ -89,7 +99,7 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
 
                     questionConnectingService.save(vm.connectingEntity);
                 }
-                if(vm.phraseOne[2] != undefined && vm.phraseTwo[2] != undefined)
+                if((vm.phraseOne[2] != '' && vm.phraseTwo[2] != '') && (vm.phraseOne[2] != null && vm.phraseTwo[2] != null))
                 {
                     vm.connectingEntity = {};
                     vm.connectingEntity.phraseOne = vm.phraseOne[2];
@@ -98,7 +108,7 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
 
                     questionConnectingService.save(vm.connectingEntity);
                 }
-                if(vm.phraseOne[3] != undefined && vm.phraseTwo[3] != undefined)
+                if((vm.phraseOne[3] != '' && vm.phraseTwo[3] != '') && (vm.phraseOne[3] != null && vm.phraseTwo[3] != null))
                 {
                     vm.connectingEntity = {};
                     vm.connectingEntity.phraseOne = vm.phraseOne[3];
@@ -108,11 +118,11 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
                     questionConnectingService.save(vm.connectingEntity);
                 }
                 clear();
-                loadConnections();
                 loadQuestions();
             }
             function errorCallback(data) {
             }
+
         }
     }
 
@@ -126,12 +136,12 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
         vm.entity = {};
         angular.extend(vm.entity, entity);
         var j = 0;
-        for(var i in vm.connectingEntities)
+        for(var $i in vm.connectingEntities)
         {
-            if(vm.connectingEntities[i].question.id == entity.id)
+            if(vm.connectingEntities[$i].question.id == entity.id)
             {
-                vm.phraseOne[j] = vm.connectingEntities[i].phraseOne;
-                vm.phraseTwo[j] = vm.connectingEntities[i].phraseTwo;
+                vm.phraseOne[j] = vm.connectingEntities[$i].phraseOne;
+                vm.phraseTwo[j] = vm.connectingEntities[$i].phraseTwo;
                 j++;
             }
         }
@@ -140,9 +150,32 @@ function QuestionConnectingControllerFn(questionService, diseaseService, questio
     function remove(entity) {
         questionService.remove(entity)
             .then(function () {
-                loadConnections();
                 loadQuestions();
             });
+    }
+
+    function increase() {
+        vm.page ++;
+        questionService.getByPage("CONNECTING_PHRASES",vm.page).then(function (data) {
+
+            for(var $i in data.content)
+            {
+                vm.entities.push(data.content[$i]);
+            }
+
+
+            for(var $i in data.content)
+            {
+                questionConnectingService.getByQuestionId(data.content[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.connectingEntities.push(data[$j]);
+                    }
+                });
+            }
+        });
+
     }
 
 }

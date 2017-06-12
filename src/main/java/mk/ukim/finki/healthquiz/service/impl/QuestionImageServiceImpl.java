@@ -89,4 +89,9 @@ public class QuestionImageServiceImpl implements QuestionImageService{
 
         return destLocation;
     }
+
+    @Override
+    public QuestionImage findByQuestionId(Long id) {
+        return questionImageRepository.findByQuestionId(id);
+    }
 }

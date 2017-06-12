@@ -15,4 +15,5 @@ public interface QuestionImageService {
     void update(Long id, QuestionImage entity);
     void deleteById(Long id);
     String savePicture(MultipartFile file);
+    QuestionImage findByQuestionId(Long id);
 }

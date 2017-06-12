@@ -13,4 +13,6 @@ public interface QuestionConnectingService {
     void insert(QuestionConnecting entity);
     void update(Long id, QuestionConnecting entity);
     void deleteById(Long id);
+
+    List<QuestionConnecting> findByQuestionId(Long id);
 }

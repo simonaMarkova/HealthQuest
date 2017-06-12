@@ -15,7 +15,8 @@ function QuestionConnectingServiceFn($http, $q) {
         update: updateFn,
         getById: getByIdFn,
         getAll: getAllFn,
-        remove: removeFn
+        remove: removeFn,
+        getByQuestionId: getByQuestionIdFn
     };
     return service;
 
@@ -79,6 +80,21 @@ function QuestionConnectingServiceFn($http, $q) {
     function removeFn(entity) {
         var deferred = $q.defer();
         $http.delete(URL+entity.id)
+            .then(
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+        return deferred.promise;
+    }
+
+
+    function getByQuestionIdFn(id){
+        var deferred = $q.defer();
+        $http.get(URL +"getByQuestion/"+ id)
             .then(
                 function (response) {
                     deferred.resolve(response.data);

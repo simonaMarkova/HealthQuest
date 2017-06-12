@@ -46,4 +46,9 @@ public class QuestionConnectiongServiceImpl implements QuestionConnectingService
     public void deleteById(Long id) {
         questionConnectingRepository.delete(id);
     }
+
+    @Override
+    public List<QuestionConnecting> findByQuestionId(Long id) {
+        return questionConnectingRepository.findByQuestionId(id);
+    }
 }

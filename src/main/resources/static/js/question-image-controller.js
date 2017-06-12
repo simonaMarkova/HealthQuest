@@ -10,6 +10,7 @@ function QuestionImageControllerFn(questionImageService, questionService, answer
     vm.clear = clear;
     vm.edit = edit;
     vm.remove = remove;
+    vm.increase = increase;
 
 
     vm.images = [];
@@ -22,27 +23,31 @@ function QuestionImageControllerFn(questionImageService, questionService, answer
     vm.myAnswers = [];
     vm.levels = [];
 
+    vm.page=0;
+
     loadQuestions();
     loadAnswers();
     loadDiseases();
-    loadMyAnswers();
     loadLevels();
-    loadImages();
 
-    function loadImages() {
-        questionImageService.getAll().then(function (data) {
-           vm.images = data;
-        });
-    }
     function loadQuestions() {
-        questionService.getByQuestionType("IMAGE_SELECT").then(function (data) {
-            vm.questions = data;
-        });
-    }
+        questionService.getByPage("IMAGE_SELECT",0).then(function (data) {
+            vm.page =0;
+            vm.myAnswers = [];
+            vm.images = [];
+            vm.questions = data.content;
 
-    function loadMyAnswers(){
-        questionAnswerService.getAll().then(function (data) {
-            vm.myAnswers = data;
+            for(var $i in vm.questions)
+            {
+                questionAnswerService.getByQuestionId(vm.questions[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.myAnswers.push(data[$j]);
+                    }
+                });
+
+            }
         });
     }
 
@@ -97,7 +102,6 @@ function QuestionImageControllerFn(questionImageService, questionService, answer
                         }
                         questionAnswerService.save(vm.questionAnswer);
                     }
-
                 }
 
                 var  file  = document.getElementById('file').files[0];
@@ -108,7 +112,7 @@ function QuestionImageControllerFn(questionImageService, questionService, answer
                     formData.append("question", object.data.id);
                     $http({
                         method: 'POST',
-                        url:  'http://localhost:7778/questionImage/',
+                        url:  '/questionImage/',
                         headers: { 'Content-Type': undefined},
                         data:  formData
                     }).success(function(data, status) {
@@ -119,8 +123,6 @@ function QuestionImageControllerFn(questionImageService, questionService, answer
                 }
 
                 clear();
-                loadImages();
-                loadMyAnswers();
                 loadQuestions();
             }
             function errorCallback(data) {
@@ -161,11 +163,34 @@ function QuestionImageControllerFn(questionImageService, questionService, answer
     function remove(entity) {
         questionService.remove(entity)
             .then(function () {
-                loadMyAnswers();
                 loadQuestions();
-                loadImages();
             });
     }
+
+
+    function increase() {
+        vm.page ++;
+        questionService.getByPage("IMAGE_SELECT",vm.page).then(function (data) {
+
+            for(var $i in data.content)
+            {
+                vm.questions.push(data.content[$i]);
+            }
+
+            for(var $i in data.content)
+            {
+                questionAnswerService.getByQuestionId(data.content[$i].id).then(function (data)
+                {
+                    for(var $j in data)
+                    {
+                        vm.myAnswers.push(data[$j]);
+                    }
+                });
+            }
+        });
+
+    }
+
 
 
 
