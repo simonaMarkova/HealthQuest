@@ -70,6 +70,6 @@ public class QuestionResource implements ApplicationContextAware {
 
     @RequestMapping(value = "/page/{type}/{page}", method = RequestMethod.GET)
     public Page<Question> getByPage(@PathVariable QuestionType type, @PathVariable int page) {
-        return queryService.getByPage(type, page, 10);
+        return queryService.getByPage(type, page, 20);
     }
 }
