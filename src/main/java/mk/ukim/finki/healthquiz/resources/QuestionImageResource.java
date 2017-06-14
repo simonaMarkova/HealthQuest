@@ -1,6 +1,5 @@
 package mk.ukim.finki.healthquiz.resources;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import mk.ukim.finki.healthquiz.models.Question;
 import mk.ukim.finki.healthquiz.models.QuestionImage;
 import mk.ukim.finki.healthquiz.service.QuestionImageService;
@@ -99,11 +98,9 @@ public class QuestionImageResource implements ApplicationContextAware {
 
                 in = new FileInputStream(file);
                 out = response.getOutputStream();
-
-
                 in.read(fileContent);
-                ByteInputStream bin = new ByteInputStream(fileContent, fileContent.length);
 
+                ByteArrayInputStream bin = new ByteArrayInputStream(fileContent);
                 response.setHeader("Content-Disposition", contentDisposition);
                 response.setContentType(Files.probeContentType(file.toPath()));
                 response.setContentLength((int) file.length());

@@ -19,9 +19,9 @@ import java.util.UUID;
 public class QuestionImageServiceImpl implements QuestionImageService{
 
 
-    @Value("file_upload_resource")
-    private String fileUploadResource;
+    //private final String fileUploadResource = "C:/Users/user/Documents/healthQuestPictures/multipleImageSelect/";
 
+    private final String fileUploadResource = "/var/lib/tomcat7/webapps/healthquiz/";
     public final QuestionImageRepository questionImageRepository;
 
     @Autowired
