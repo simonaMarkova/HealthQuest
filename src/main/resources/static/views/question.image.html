@@ -71,7 +71,7 @@
             <th></th>
         </tr>
         <tr ng-repeat="e in vm6.questions" ng-show="e.questionType=='IMAGE_SELECT'">
-            <td>{{e.question}}</td>
+            <td style="max-width: 400px">{{e.question}}</td>
             <td>
                 <img ng-src="/questionImage/getImage/{{e.id}}" style="height: 50px;width: 50px">
             </td>

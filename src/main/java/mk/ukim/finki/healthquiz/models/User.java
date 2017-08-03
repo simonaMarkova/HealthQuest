@@ -1,9 +1,6 @@
 package mk.ukim.finki.healthquiz.models;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * Created by Simona on 12.04.2017.
@@ -23,7 +20,7 @@ public class User extends BaseEntity{
     private String lastName;
 
     @Transient
-    private Integer points;
+    private Integer points = 0;
 
     @ManyToOne
     private Level level;

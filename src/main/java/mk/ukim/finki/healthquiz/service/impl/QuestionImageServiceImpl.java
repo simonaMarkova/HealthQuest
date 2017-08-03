@@ -19,9 +19,9 @@ import java.util.UUID;
 public class QuestionImageServiceImpl implements QuestionImageService{
 
 
-    //private final String fileUploadResource = "C:/Users/user/Documents/healthQuestPictures/multipleImageSelect/";
+    private final String fileUploadResource = "C:/Users/Simona/Documents/healthQuestPictures/";
 
-    private final String fileUploadResource = "/var/lib/tomcat7/webapps/healthquiz/";
+   // private final String fileUploadResource = "/var/lib/tomcat7/webapps/healthquiz/";
     public final QuestionImageRepository questionImageRepository;
 
     @Autowired
@@ -71,7 +71,7 @@ public class QuestionImageServiceImpl implements QuestionImageService{
 
         try{
             if (!new File(fileUploadResource). exists()) {
-                new File(fileUploadResource).mkdir( );
+                new File(fileUploadResource).mkdirs( );
             }
 
             String orgName = file.getOriginalFilename();

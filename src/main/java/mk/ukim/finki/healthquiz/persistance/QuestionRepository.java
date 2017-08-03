@@ -14,4 +14,6 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends CrudRepository<Question, Long>,  JpaSpecificationExecutor<Question> {
     List<Question> findByQuestionType(QuestionType type);
+    List<Question> findByLevelId(Long id);
+    List<Question> findByDiseaseId(Long id);
 }

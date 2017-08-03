@@ -19,9 +19,9 @@ import java.util.UUID;
 public class AnswerImageServiceImpl implements AnswerImageService {
 
 
-    //private final String fileUploadResource = "C:/Users/user/Documents/healthQuestPictures/multipleImageSelect/";
+    private final String fileUploadResource = "C:/Users/Simona/Documents/healthQuestPictures/";
 
-    private final String fileUploadResource = "/var/lib/tomcat7/webapps/healthquiz/";
+   // private final String fileUploadResource = "/var/lib/tomcat7/webapps/healthquiz/";
     public final AnswerImageRepository answerImageRepository;
 
     @Autowired

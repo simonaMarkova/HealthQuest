@@ -126,4 +126,15 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findByQuestionType(type);
     }
 
+    @Override
+    public List<Question> findByLevelId(Long id) {
+        return questionRepository.findByLevelId(id);
+    }
+
+    @Override
+    public List<Question> findByDiseaseId(Long id) {
+        return questionRepository.findByDiseaseId(id);
+    }
+
+
 }

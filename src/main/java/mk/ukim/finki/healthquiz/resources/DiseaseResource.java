@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Simona on 15.03.2017.
@@ -56,5 +57,13 @@ public class DiseaseResource implements ApplicationContextAware {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
+    }
+
+    @RequestMapping(value = "/random", method = RequestMethod.GET)
+    public Disease getRandom(){
+        List<Disease> diseases = service.findAll();
+        Random r = new Random();
+        int randomId = r.nextInt(diseases.size());
+        return diseases.get(randomId);
     }
 }

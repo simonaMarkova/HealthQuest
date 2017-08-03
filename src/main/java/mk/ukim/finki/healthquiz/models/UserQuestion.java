@@ -21,6 +21,9 @@ public class UserQuestion extends BaseEntity{
     @ManyToOne
     private QuestionAnswer questionAnswer;
 
+    @ManyToOne
+    private AnswerImage answerImage;
+
     private Date openedAt;
 
     private Date answeredAt;
@@ -83,5 +86,13 @@ public class UserQuestion extends BaseEntity{
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public AnswerImage getAnswerImage() {
+        return answerImage;
+    }
+
+    public void setAnswerImage(AnswerImage answerImage) {
+        this.answerImage = answerImage;
     }
 }
