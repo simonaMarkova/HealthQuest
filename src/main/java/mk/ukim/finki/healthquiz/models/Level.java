@@ -14,6 +14,8 @@ public class Level extends BaseEntity{
 
     private int xp;
 
+    private int maxPoints;
+
     public int getLevel() {
         return level;
     }
@@ -28,5 +30,13 @@ public class Level extends BaseEntity{
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    public int getMaxPoints() {
+        return maxPoints;
+    }
+
+    public void setMaxPoints(int maxPoints) {
+        this.maxPoints = maxPoints;
     }
 }

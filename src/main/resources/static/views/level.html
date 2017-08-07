@@ -23,6 +23,14 @@
                    ng-model="vm5.entity.xp">
         </div>
 
+        <div class="form-group">
+            <label>Максимум поени за ниво</label>
+            <input class="form-control"
+                   type="number"
+                   ng-required="true"
+                   ng-model="vm5.entity.maxPoints">
+        </div>
+
         <input class="btn btn-primary" type="submit" value="Внеси">
     </form>
 
@@ -32,11 +40,13 @@
         <tr>
             <th>Ниво</th>
             <th>Поени за искуство</th>
+            <th>Максимум поени за ниво</th>
             <th></th>
         </tr>
         <tr ng-repeat="e in vm5.entities">
             <td>{{e.level}}</td>
             <td>{{e.xp}}</td>
+            <td>{{e.maxPoints}}</td>
             <td>
                 <button class="btn btn-xs btn-default"
                         ng-click="vm5.edit(e)">

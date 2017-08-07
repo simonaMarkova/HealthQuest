@@ -1,7 +1,9 @@
 package mk.ukim.finki.healthquiz.resources;
 
+import mk.ukim.finki.healthquiz.models.Level;
 import mk.ukim.finki.healthquiz.models.User;
 import mk.ukim.finki.healthquiz.persistance.UserQuestionRepository;
+import mk.ukim.finki.healthquiz.service.LevelService;
 import mk.ukim.finki.healthquiz.service.UserService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,13 @@ public class UserResource implements ApplicationContextAware{
     }
 
     private UserService userService;
+    private LevelService levelService;
     private final UserQuestionRepository userQuestionRepository;
 
     @Autowired
-    public UserResource(UserService userService, UserQuestionRepository userQuestionRepository){
+    public UserResource(UserService userService, LevelService levelService, UserQuestionRepository userQuestionRepository){
         this.userService = userService;
+        this.levelService = levelService;
         this.userQuestionRepository = userQuestionRepository;
     }
 
@@ -50,15 +54,14 @@ public class UserResource implements ApplicationContextAware{
     }
 
     @RequestMapping(value = "/find-all", method = RequestMethod.GET)
-    public List<User> getAll() {
+    public List<User> getAll()
+    {
         return userService.findAll();
     }
 
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
     public User getById(@PathVariable Long id) {
         User user = userService.findById(id);
-        int points = userQuestionRepository.getPoints(user.id);
-        user.setPoints(points);
         return user;
     }
 
@@ -66,5 +69,22 @@ public class UserResource implements ApplicationContextAware{
     public void deleteById(@PathVariable Long id) {
         userService.deleteById(id);
     }
+
+    @RequestMapping(value="/updateLevel/{userId}/{levelId}", method = RequestMethod.POST)
+    public User updateLevelForUser(@PathVariable Long userId, @PathVariable Long levelId)
+    {
+        User user = userService.findById(userId);
+        Level level = levelService.findById(levelId);
+        int nextLevel = level.getLevel() + 1;
+        for (Level l: levelService.findAll()) {
+            if (nextLevel == l.getLevel())
+            {
+                user.setLevel(l);
+            }
+        }
+        userService.insert(user);
+        return user;
+    }
+
 
 }
