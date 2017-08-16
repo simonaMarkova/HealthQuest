@@ -80,7 +80,7 @@
             <th>Слики</th>
             <th></th>
         </tr>
-        <tr ng-repeat="e in vm7.questions" ng-show="e.questionType=='MULTIPLE_IMAGE_SELECT'">
+        <tr ng-repeat="e in vm7.questions | startFrom:vm7.currentPage*vm7.pageSize | limitTo:vm7.pageSize" ng-show="e.questionType=='MULTIPLE_IMAGE_SELECT'">
             <td  style="max-width: 400px">{{e.question}}</td>
             <td>{{e.level.level}}</td>
             <td>{{e.disease.name}}</td>
@@ -102,10 +102,29 @@
                 </button>
             </td>
         </tr>
-        <tr>
-            <td colspan="5" align="center"><button class="btn btn-xs btn-success" ng-click="vm7.increase()">Прегледај повеќе</button></td>
-        </tr>
+
     </table>
+    <div style="text-align: center">
+
+        <ul class="pagination">
+            <li ng-class="{disabled:vm7.currentPage === 0}">
+                <a ng-click="vm7.currentPage=0">First</a>
+            </li>
+            <li ng-class="{disabled:vm7.currentPage === 0}">
+                <a ng-click="vm7.currentPage=vm7.currentPage-1">Previous</a>
+            </li>
+            <li ng-repeat="page in vm7.loadPages()" ng-class="{active:vm7.currentPage === page}">
+                <a ng-click="vm7.currentPage=page">{{page + 1}}</a>
+            </li>
+            <li ng-class="{disabled:vm7.currentPage === vm7.numberOfPages()-1}">
+                <a ng-click="vm7.currentPage=vm7.currentPage+1">Next</a>
+            </li>
+            <li ng-class="{disabled:vm7.currentPage === vm7.numberOfPages()-1}">
+                <a ng-click="vm7.currentPage=vm7.numberOfPages()-1">Last</a>
+            </li>
+        </ul>
+
+    </div>
 
 
 </div>

@@ -57,6 +57,7 @@
 
         <br/>
 
+
         <table ng-show="vm.questions.length>0" class="table table-bordered table-striped">
             <tr>
                 <th>Прашање</th>
@@ -65,7 +66,7 @@
                 <th>Одговори</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="e in vm.questions" ng-show="e.questionType=='ANSWER_SELECT'">
+            <tr ng-repeat="e in vm.questions | startFrom:vm.currentPage*vm.pageSize | limitTo:vm.pageSize" ng-show="e.questionType=='ANSWER_SELECT'">
                 <td style="max-width: 400px">{{e.question}}</td>
                 <td>{{e.level.level}}</td>
                 <td>{{e.disease.name}}</td>
@@ -88,11 +89,29 @@
                 </td>
             </tr>
 
-            <tr>
-                <td colspan="5" align="center"><button class="btn btn-xs btn-success" ng-click="vm.increase()">Прегледај повеќе</button></td>
-            </tr>
-        </table>
 
+        </table>
+        <div style="text-align: center">
+
+            <ul class="pagination">
+                <li ng-class="{disabled:vm.currentPage === 0}">
+                    <a ng-click="vm.currentPage=0">First</a>
+                </li>
+                <li ng-class="{disabled:vm.currentPage === 0}">
+                    <a ng-click="vm.currentPage=vm.currentPage-1">Previous</a>
+                </li>
+                <li ng-repeat="page in vm.loadPages()" ng-class="{active:vm.currentPage === page}">
+                    <a ng-click="vm.currentPage=page">{{page + 1}}</a>
+                </li>
+                <li ng-class="{disabled:vm.currentPage === vm.numberOfPages()-1}">
+                    <a ng-click="vm.currentPage=vm.currentPage+1">Next</a>
+                </li>
+                <li ng-class="{disabled:vm.currentPage === vm.numberOfPages()-1}">
+                    <a ng-click="vm.currentPage=vm.numberOfPages()-1">Last</a>
+                </li>
+            </ul>
+
+        </div>
 
     </div>
 

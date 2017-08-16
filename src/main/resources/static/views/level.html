@@ -43,7 +43,7 @@
             <th>Максимум поени за ниво</th>
             <th></th>
         </tr>
-        <tr ng-repeat="e in vm5.entities">
+        <tr ng-repeat="e in vm5.entities | startFrom:vm5.currentPage*vm5.pageSize | limitTo:vm5.pageSize">
             <td>{{e.level}}</td>
             <td>{{e.xp}}</td>
             <td>{{e.maxPoints}}</td>
@@ -59,6 +59,27 @@
             </td>
         </tr>
     </table>
+    <div style="text-align: center">
+
+        <ul class="pagination">
+            <li ng-class="{disabled:vm5.currentPage === 0}">
+                <a ng-click="vm5.currentPage=0">First</a>
+            </li>
+            <li ng-class="{disabled:vm5.currentPage === 0}">
+                <a ng-click="vm5.currentPage=vm5.currentPage-1">Previous</a>
+            </li>
+            <li ng-repeat="page in vm5.loadPages()" ng-class="{active:vm5.currentPage === page}">
+                <a ng-click="vm5.currentPage=page">{{page + 1}}</a>
+            </li>
+            <li ng-class="{disabled:vm5.currentPage === vm5.numberOfPages()-1}">
+                <a ng-click="vm5.currentPage=vm5.currentPage+1">Next</a>
+            </li>
+            <li ng-class="{disabled:vm5.currentPage === vm5.numberOfPages()-1}">
+                <a ng-click="vm5.currentPage=vm5.numberOfPages()-1">Last</a>
+            </li>
+        </ul>
+
+    </div>
 </div>
 </body>
 </html>

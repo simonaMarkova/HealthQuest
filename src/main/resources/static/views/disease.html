@@ -25,7 +25,7 @@
                 <th>Болест</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="e in vm3.entities">
+            <tr ng-repeat="e in vm3.entities | startFrom:vm3.currentPage*vm3.pageSize | limitTo:vm3.pageSize">
                 <td>{{e.name}}</td>
                 <td>
                     <button class="btn btn-xs btn-default"
@@ -39,6 +39,27 @@
                 </td>
             </tr>
         </table>
+        <div style="text-align: center">
+
+            <ul class="pagination">
+                <li ng-class="{disabled:vm3.currentPage === 0}">
+                    <a ng-click="vm3.currentPage=0">First</a>
+                </li>
+                <li ng-class="{disabled:vm3.currentPage === 0}">
+                    <a ng-click="vm3.currentPage=vm3.currentPage-1">Previous</a>
+                </li>
+                <li ng-repeat="page in vm3.loadPages()" ng-class="{active:vm3.currentPage === page}">
+                    <a ng-click="vm3.currentPage=page">{{page + 1}}</a>
+                </li>
+                <li ng-class="{disabled:vm3.currentPage === vm3.numberOfPages()-1}">
+                    <a ng-click="vm3.currentPage=vm3.currentPage+1">Next</a>
+                </li>
+                <li ng-class="{disabled:vm3.currentPage === vm3.numberOfPages()-1}">
+                    <a ng-click="vm3.currentPage=vm3.numberOfPages()-1">Last</a>
+                </li>
+            </ul>
+
+        </div>
     </div>
 </body>
 </html>

@@ -72,7 +72,7 @@
             <th>Фрази</th>
             <th></th>
         </tr>
-        <tr ng-repeat="e in vm4.entities" ng-show="e.questionType=='CONNECTING_PHRASES'">
+        <tr ng-repeat="e in vm4.entities | startFrom:vm4.currentPage*vm4.pageSize | limitTo:vm4.pageSize" ng-show="e.questionType=='CONNECTING_PHRASES'">
             <td  style="max-width: 400px">{{e.question}}</td>
             <td>{{e.level.level}}</td>
             <td>{{e.disease.name}}</td>
@@ -92,10 +92,29 @@
                 </button>
             </td>
         </tr>
-        <tr>
-            <td colspan="5" align="center"><button class="btn btn-xs btn-success" ng-click="vm4.increase()">Прегледај повеќе</button></td>
-        </tr>
+
     </table>
+    <div style="text-align: center">
+
+        <ul class="pagination">
+            <li ng-class="{disabled:vm4.currentPage === 0}">
+                <a ng-click="vm4.currentPage=0">First</a>
+            </li>
+            <li ng-class="{disabled:vm4.currentPage === 0}">
+                <a ng-click="vm4.currentPage=vm4.currentPage-1">Previous</a>
+            </li>
+            <li ng-repeat="page in vm4.loadPages()" ng-class="{active:vm4.currentPage === page}">
+                <a ng-click="vm4.currentPage=page">{{page + 1}}</a>
+            </li>
+            <li ng-class="{disabled:vm4.currentPage === vm4.numberOfPages()-1}">
+                <a ng-click="vm4.currentPage=vm4.currentPage+1">Next</a>
+            </li>
+            <li ng-class="{disabled:vm4.currentPage === vm4.numberOfPages()-1}">
+                <a ng-click="vm4.currentPage=vm4.numberOfPages()-1">Last</a>
+            </li>
+        </ul>
+
+    </div>
 
 </div>
 

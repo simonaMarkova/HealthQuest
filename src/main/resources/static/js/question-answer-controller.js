@@ -3,16 +3,21 @@
  */
 app.controller('questionController', QuestionControllerFn);
 
-QuestionControllerFn.$inject = ['questionService', 'answerService', 'questionAnswerService', 'diseaseService', 'levelService'];
+QuestionControllerFn.$inject = ['$filter','questionService', 'answerService', 'questionAnswerService', 'diseaseService', 'levelService'];
 
-function QuestionControllerFn(questionService, answerService, questionAnswerService, diseaseService, levelService) {
+function QuestionControllerFn($filter, questionService, answerService, questionAnswerService, diseaseService, levelService) {
     var vm = this;
 
     vm.save = save;
     vm.clear = clear;
     vm.edit = edit;
     vm.remove = remove;
-    vm.increase = increase;
+    vm.getData = getData;
+    vm.numberOfPages = numberOfPages;
+    vm.loadPages = loadPages;
+    vm.currentPage = 0;
+    vm.pageSize = 5;
+    vm.page = 0;
 
     vm.proba = [];
     vm.question = {};
@@ -24,12 +29,26 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
     vm.myAnswers = [];
     vm.levels = [];
 
-    vm.page = 0;
-
     loadQuestions();
     loadAnswers();
     loadDiseases();
     loadLevels();
+    numberOfPages();
+    getData();
+    loadPages();
+
+    function loadPages()
+    {
+        var edge = vm.numberOfPages();
+        var step = 1;
+        var start = 0;
+
+        // Create the array of numbers, stopping befor the edge.
+        for (var ret = []; (edge - start) * step > 0; start += step) {
+            ret.push(start);
+        }
+        return ret;
+    }
 
     function loadQuestions() {
         questionService.getByPage("ANSWER_SELECT",0).then(function (data) {
@@ -68,6 +87,7 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
             vm.levels = data;
         })
     }
+
 
     function save() {
         if(vm.question.questionType == undefined)
@@ -150,29 +170,17 @@ function QuestionControllerFn(questionService, answerService, questionAnswerServ
             });
     }
 
-    function increase() {
-        vm.page ++;
-        questionService.getByPage("ANSWER_SELECT",vm.page).then(function (data) {
-
-            for(var $i in data.content)
-            {
-                vm.questions.push(data.content[$i]);
-            }
-
-
-            for(var $i in data.content)
-            {
-                questionAnswerService.getByQuestionId(data.content[$i].id).then(function (data)
-                {
-                    for(var $j in data)
-                    {
-                        vm.myAnswers.push(data[$j]);
-                    }
-                });
-            }
-        });
-    }
-
-
+    function getData() {
+    return $filter('filter')(vm.questions);
+}
+function numberOfPages(){
+    return  Math.ceil(vm.getData().length/vm.pageSize);
+}
 
 }
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});

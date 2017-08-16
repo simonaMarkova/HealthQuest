@@ -4,18 +4,22 @@
 
 app.controller('answerImageController', AnswerImageControllerFn);
 
-AnswerImageControllerFn.$inject = ['answerImageService','questionService',   'diseaseService', 'levelService', '$http'];
+AnswerImageControllerFn.$inject = ['$filter','answerImageService','questionService',   'diseaseService', 'levelService', '$http'];
 
-function AnswerImageControllerFn(answerImageService, questionService,  diseaseService, levelService, $http) {
+function AnswerImageControllerFn($filter,answerImageService, questionService,  diseaseService, levelService, $http) {
     var vm = this;
 
     vm.save = save;
     vm.clear = clear;
     vm.edit = edit;
     vm.remove = remove;
-    vm.increase = increase;
-
+    vm.getData = getData;
+    vm.numberOfPages = numberOfPages;
+    vm.loadPages = loadPages;
+    vm.currentPage = 0;
+    vm.pageSize = 5;
     vm.page = 0;
+
 
     vm.question = {};
     vm.questions = [];
@@ -31,6 +35,23 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
     loadQuestions();
     loadDiseases();
     loadLevels();
+    numberOfPages();
+    getData();
+    loadPages();
+
+
+    function loadPages()
+    {
+        var edge = vm.numberOfPages();
+        var step = 1;
+        var start = 0;
+
+        // Create the array of numbers, stopping befor the edge.
+        for (var ret = []; (edge - start) * step > 0; start += step) {
+            ret.push(start);
+        }
+        return ret;
+    }
 
     function loadQuestions() {
         questionService.getByPage("MULTIPLE_IMAGE_SELECT",0).then(function (data)  {
@@ -206,27 +227,18 @@ function AnswerImageControllerFn(answerImageService, questionService,  diseaseSe
             });
     }
 
-    function increase() {
-        vm.page ++;
-        questionService.getByPage("MULTIPLE_IMAGE_SELECT",vm.page).then(function (data) {
 
-            for(var $i in data.content)
-            {
-                vm.questions.push(data.content[$i]);
-            }
-
-            for(var $i in data.content)
-            {
-                answerImageService.getByQuestionId(data.content[$i].id).then(function (data)
-                {
-                    for(var $j in data)
-                    {
-                        vm.myAnswers.push(data[$j]);
-                    }
-                });
-            }
-        });
-
+    function getData() {
+        return $filter('filter')(vm.questions);
+    }
+    function numberOfPages(){
+        return  Math.ceil(vm.getData().length/vm.pageSize);
     }
 
 }
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
