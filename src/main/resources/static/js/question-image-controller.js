@@ -124,22 +124,21 @@ function QuestionImageControllerFn($filter,questionImageService, questionService
                     }
                 }
 
-                var  file  = document.getElementById('file').files[0];
-                if(file != undefined)
+                var file = document.getElementById('myFileField').files[0];
+                if (file != undefined)
                 {
-                    var formData=new FormData();
-                    formData.append("file",file);
-                    formData.append("question", object.data.id);
-                    $http({
-                        method: 'POST',
-                        url:  '/questionImage/',
-                        headers: { 'Content-Type': undefined},
-                        data:  formData
-                    }).success(function(data, status) {
-                        //alert("Success ... " + status);
-                    }).error(function(data, status) {
-                        // alert("Error ... " + status);
+                    var fileFormData = new FormData();
+                    fileFormData.append('file', file);
+                    fileFormData.append('question', object.data.id);
+                    $http.post('/questionImage/', fileFormData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+
+                    }).success(function (response) {
+
+                    }).error(function (response) {
                     });
+
                 }
 
                 clear();

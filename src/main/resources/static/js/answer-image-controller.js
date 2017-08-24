@@ -110,95 +110,89 @@ function AnswerImageControllerFn($filter,answerImageService, questionService,  d
             promise.then(successCallback, errorCallback);
             function successCallback(object) {
 
-                if(file != undefined)
+                if (file != undefined)
                 {
-                    var formData=new FormData();
-                    formData.append("file",file);
-                    formData.append("question", object.data.id);
-                    formData.append("number", 0);
+                    var fileFormData = new FormData();
+                    fileFormData.append('file', file);
+                    fileFormData.append('question', object.data.id);
+                    fileFormData.append('number', 0);
                     if (vm.imageStatus[0] == true)
                     {
-                        formData.append("status", true);
+                        fileFormData.append("status", true);
                     }
-                    $http({
-                        method: 'POST',
-                        url:  '/answerImage/',
-                        headers: { 'Content-Type': undefined},
-                        data:  formData
-                    }).success(function(data, status) {
-                        //alert("Success ... " + status);
-                    }).error(function(data, status) {
-                        // alert("Error ... " + status);
+                    $http.post('/answerImage/', fileFormData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+
+                    }).success(function (response) {
+
+                    }).error(function (response) {
                     });
+
                 }
 
-
-                if(file1 != undefined)
+                 if (file1 != undefined)
                 {
-                    var formData=new FormData();
-                    formData.append("file",file1);
-                    formData.append("question", object.data.id);
-                    formData.append("number", 1);
+                    var fileFormData = new FormData();
+                    fileFormData.append('file', file1);
+                    fileFormData.append('question', object.data.id);
+                    fileFormData.append('number', 1);
                     if (vm.imageStatus[1] == true)
                     {
-                        formData.append("status", true);
+                        fileFormData.append("status", true);
                     }
-                    $http({
-                        method: 'POST',
-                        url:  '/answerImage/',
-                        headers: { 'Content-Type': undefined},
-                        data:  formData
-                    }).success(function(data, status) {
-                        //alert("Success ... " + status);
-                    }).error(function(data, status) {
-                        // alert("Error ... " + status);
+                    $http.post('/answerImage/', fileFormData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+
+                    }).success(function (response) {
+
+                    }).error(function (response) {
                     });
+
                 }
 
                 file2  = document.getElementById('file2').files[0];
-                if(file2 != undefined)
+                if (file2 != undefined)
                 {
-                    var formData=new FormData();
-                    formData.append("file",file2);
-                    formData.append("question", object.data.id);
-                    formData.append("number", 2);
+                    var fileFormData = new FormData();
+                    fileFormData.append('file', file2);
+                    fileFormData.append('question', object.data.id);
+                    fileFormData.append('number', 2);
                     if (vm.imageStatus[2] == true)
                     {
-                        formData.append("status", true);
+                        fileFormData.append("status", true);
                     }
-                    $http({
-                        method: 'POST',
-                        url:  '/answerImage/',
-                        headers: { 'Content-Type': undefined},
-                        data:  formData
-                    }).success(function(data, status) {
-                        //alert("Success ... " + status);
-                    }).error(function(data, status) {
-                        // alert("Error ... " + status);
+                    $http.post('/answerImage/', fileFormData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+
+                    }).success(function (response) {
+
+                    }).error(function (response) {
                     });
+
                 }
 
-
-                if(file3 != undefined)
+                if (file3 != undefined)
                 {
-                    var formData=new FormData();
-                    formData.append("file",file3);
-                    formData.append("question", object.data.id);
-                    formData.append("number", 3);
+                    var fileFormData = new FormData();
+                    fileFormData.append('file', file3);
+                    fileFormData.append('question', object.data.id);
+                    fileFormData.append('number', 3);
                     if (vm.imageStatus[3] == true)
                     {
-                        formData.append("status", true);
+                        fileFormData.append("status", true);
                     }
-                    $http({
-                        method: 'POST',
-                        url:  '/answerImage/',
-                        headers: { 'Content-Type': undefined},
-                        data:  formData
-                    }).success(function(data, status) {
-                        //alert("Success ... " + status);
-                    }).error(function(data, status) {
-                        // alert("Error ... " + status);
+                    $http.post('/answerImage/', fileFormData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+
+                    }).success(function (response) {
+
+                    }).error(function (response) {
                     });
+
                 }
                 clear();
                 loadQuestions();
