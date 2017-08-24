@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
     User findById(Long id);
-    void insert(User entity);
+    User save(User entity);
     void update(Long id, User entity);
     void deleteById(Long id);
-
-    public User findByUsername(String username);
+    User findByUsername(String username);
+    User findByEmail(String email);
 }

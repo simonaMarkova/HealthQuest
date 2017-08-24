@@ -114,7 +114,7 @@
 		<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-facebook</artifactId>
-			<version>${spring.social.facebook.version}</version>
+			<version>3.0.0.M3</version>
 		</dependency>
 		<!-- Spring Social Twitter -->
 		<dependency>
@@ -122,6 +122,8 @@
 			<artifactId>spring-social-twitter</artifactId>
 			<version>${spring.social.twitter.version}</version>
 		</dependency>
+
+
 
 
 	</dependencies>
@@ -144,4 +146,11 @@
 	</build>
 
 
+	<repositories>
+		<!--repository za facebook-->
+		<repository>
+			<id>alfresco-public</id>
+			<url>http://repo.spring.io/milestone/</url>
+		</repository>
+	</repositories>
 </project>

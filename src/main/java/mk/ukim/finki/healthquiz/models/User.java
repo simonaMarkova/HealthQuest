@@ -25,6 +25,10 @@ public class User extends BaseEntity{
     @ManyToOne
     private Level level;
 
+    private String profileImage;
+
+    Boolean facebookAccount;
+
     public String getUsername() {
         return username;
     }
@@ -79,5 +83,21 @@ public class User extends BaseEntity{
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public Boolean getFacebookAccount() {
+        return facebookAccount;
+    }
+
+    public void setFacebookAccount(Boolean facebookAccount) {
+        this.facebookAccount = facebookAccount;
     }
 }

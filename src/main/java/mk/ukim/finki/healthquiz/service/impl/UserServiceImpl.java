@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void insert(User entity) {
-        userRepository.save(entity);
+    public User save(User entity) {
+         return userRepository.save(entity);
     }
 
     @Override
@@ -73,16 +73,20 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findByUsername(String username) {
         User user = userRepository.findByUsername(username);
-        if (userQuestionRepository.findByUserId(user.id).size() == 0
-                )
-        {
-            user.setPoints(0);
+        if(user != null){
+            if (userQuestionRepository.findByUserId(user.id).size() == 0) {
+                user.setPoints(0);
+            }
+            else {
+                user.setPoints(userQuestionRepository.getPoints(user.id));
+            }
         }
-        else {
-            user.setPoints(userQuestionRepository.getPoints(user.id));
-        }
-
         return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 }

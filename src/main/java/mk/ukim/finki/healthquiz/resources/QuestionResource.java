@@ -1,6 +1,7 @@
 package mk.ukim.finki.healthquiz.resources;
 
 import mk.ukim.finki.healthquiz.enumeration.QuestionType;
+import mk.ukim.finki.healthquiz.models.Level;
 import mk.ukim.finki.healthquiz.models.Question;
 import mk.ukim.finki.healthquiz.models.UserQuestion;
 import mk.ukim.finki.healthquiz.service.QueryService;
@@ -155,4 +156,5 @@ public class QuestionResource implements ApplicationContextAware {
 
         return questionList.get(randomId);
     }
+
 }
