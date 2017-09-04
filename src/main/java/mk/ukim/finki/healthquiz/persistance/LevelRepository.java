@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface LevelRepository extends CrudRepository<Level,Long>{
+
+    Level findByLevel(int level);
 }

@@ -13,4 +13,5 @@ public interface LevelService {
     void insert(Level entity);
     void update(Long id, Level entity);
     void deleteById(Long id);
+    Level findByLevel(int level);
 }

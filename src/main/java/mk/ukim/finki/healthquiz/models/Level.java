@@ -1,5 +1,6 @@
 package mk.ukim.finki.healthquiz.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "health_level")
 public class Level extends BaseEntity{
 
+    @Column(name="level", unique=true)
     private int level;
 
     private int xp;

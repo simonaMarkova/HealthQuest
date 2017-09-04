@@ -67,8 +67,8 @@ public class UserResource implements ApplicationContextAware {
                 return null;
             } else {
                 user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-                Level level = levelService.findById(1L);
-                user.setLevel(level);
+                Level l = levelService.findByLevel(1);
+                user.setLevel(l);
                 byte[] imgbytes = Base64.getMimeDecoder().decode(user.getProfileImage());
                 try {
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(imgbytes));
@@ -122,7 +122,7 @@ public class UserResource implements ApplicationContextAware {
 
     @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
     public User loginEmail(@RequestBody LoginAndorid loginAndorid, HttpServletResponse response) {
-        User user = userService.findByEmail(loginAndorid.getEmail());
+        User user = userService.findByEmail(loginAndorid.getUsername());
         if (user != null) {
             if (user.getPassword() == null) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -167,11 +167,8 @@ public class UserResource implements ApplicationContextAware {
         User user = userService.findById(userId);
         Level level = levelService.findById(levelId);
         int nextLevel = level.getLevel() + 1;
-        for (Level l : levelService.findAll()) {
-            if (nextLevel == l.getLevel()) {
-                user.setLevel(l);
-            }
-        }
+        Level l = levelService.findByLevel(nextLevel);
+        user.setLevel(l);
         userService.save(user);
         return user;
     }
@@ -197,7 +194,7 @@ public class UserResource implements ApplicationContextAware {
                 if (facebookLogin.getUser().getEmail().equals(facebookUser.getEmail())) {
                     User signUpUser = facebookLogin.getUser();
                     signUpUser.setFacebookAccount(true);
-                    Level level = levelService.findById(1L);
+                    Level level = levelService.findByLevel(1);
                     signUpUser.setLevel(level);
                     if(signUpUser.getProfileImage()!=null){
                         byte[] imgbytes = Base64.getMimeDecoder().decode(signUpUser.getProfileImage());

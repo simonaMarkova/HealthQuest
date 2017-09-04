@@ -45,4 +45,9 @@ public class LevelServiceImpl implements LevelService {
     public void deleteById(Long id) {
         levelRepository.delete(id);
     }
+
+    @Override
+    public Level findByLevel(int level) {
+        return levelRepository.findByLevel(level);
+    }
 }
