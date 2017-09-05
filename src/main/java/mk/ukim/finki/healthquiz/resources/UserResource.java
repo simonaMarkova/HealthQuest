@@ -2,7 +2,6 @@ package mk.ukim.finki.healthquiz.resources;
 
 import mk.ukim.finki.healthquiz.helper.FacebookLogin;
 import mk.ukim.finki.healthquiz.helper.FacebookService;
-import mk.ukim.finki.healthquiz.helper.LoginAndorid;
 import mk.ukim.finki.healthquiz.models.Level;
 import mk.ukim.finki.healthquiz.helper.LoginInfo;
 import mk.ukim.finki.healthquiz.models.User;
@@ -69,28 +68,32 @@ public class UserResource implements ApplicationContextAware {
                 user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
                 Level l = levelService.findByLevel(1);
                 user.setLevel(l);
-                byte[] imgbytes = Base64.getMimeDecoder().decode(user.getProfileImage());
-                try {
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(imgbytes));
-                    String destLocation;
-                    if (!new File(fileUploadResource).exists()) {
-                        new File(fileUploadResource).mkdirs();
+                if(user.getProfileImage()!= null && !user.getProfileImage().equals("")){
+                    byte[] imgbytes = Base64.getMimeDecoder().decode(user.getProfileImage());
+                    try {
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(imgbytes));
+                        String destLocation;
+                        if (!new File(fileUploadResource).exists()) {
+                            new File(fileUploadResource).mkdirs();
+                        }
+
+                        String newNamePart1 = UUID.randomUUID().toString();
+                        String newNamePart2 = UUID.randomUUID().toString();
+                        String newName = String.format("%s-%s.jpg", newNamePart1, newNamePart2);
+                        destLocation = String.format(fileUploadResource + newName);
+
+                        File dest = new File(destLocation);
+                        ImageIO.write(image, "jpg", dest);
+
+                        user.setProfileImage(destLocation);
+
+                    } catch (Exception exc) {
+
                     }
 
-                    String newNamePart1 = UUID.randomUUID().toString();
-                    String newNamePart2 = UUID.randomUUID().toString();
-                    String newName = String.format("%s-%s.jpg", newNamePart1, newNamePart2);
-                    destLocation = String.format(fileUploadResource + newName);
-
-                    File dest = new File(destLocation);
-                    ImageIO.write(image, "jpg", dest);
-
-                    user.setProfileImage(destLocation);
-
-                } catch (Exception exc) {
-
+                }else{
+                    user.setProfileImage(null);
                 }
-
 
                 return userService.save(user);
             }
@@ -108,27 +111,6 @@ public class UserResource implements ApplicationContextAware {
                 return null;
             }
             if (BCrypt.checkpw(loginInfo.getPassword(), user.getPassword())) {
-                return user;
-            } else {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                return null;
-            }
-
-        } else {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
-    public User loginEmail(@RequestBody LoginAndorid loginAndorid, HttpServletResponse response) {
-        User user = userService.findByEmail(loginAndorid.getUsername());
-        if (user != null) {
-            if (user.getPassword() == null) {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                return null;
-            }
-            if (BCrypt.checkpw(loginAndorid.getPassword(), user.getPassword())) {
                 return user;
             } else {
                 response.setStatus(HttpStatus.NOT_FOUND.value());

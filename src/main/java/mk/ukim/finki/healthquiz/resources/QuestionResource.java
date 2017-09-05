@@ -88,34 +88,38 @@ public class QuestionResource implements ApplicationContextAware {
         int randomId = 0;
         Random r = new Random();
 
-        while(flag){
+        if(questionList.size()>0) {
+            while (flag) {
 
-            randomId = r.nextInt(questionList.size());
+                randomId = r.nextInt(questionList.size());
 
-            if(userList.size()==0){
-                flag=false;
-            }else{
-                for(UserQuestion userQuestion : userList){
-                    if(userQuestion.getQuestion().id == questionList.get(randomId).id){
-                        if(!userQuestion.isWin()){
-                            flag=false;
-                            userQuestionService.deleteById(userQuestion.id);
-                        }else {
-                            break;
+                if (userList.size() == 0) {
+                    flag = false;
+                } else {
+                    for (UserQuestion userQuestion : userList) {
+                        if (userQuestion.getQuestion().id == questionList.get(randomId).id) {
+                            if (!userQuestion.isWin()) {
+                                flag = false;
+                                userQuestionService.deleteById(userQuestion.id);
+                            } else {
+                                break;
+                            }
+                        } else if (userList.indexOf(userQuestion) == userList.size() - 1 && flag && userQuestion.getQuestion().id == questionList.get(randomId).id) {
+                            if (!userQuestion.isWin()) {
+                                flag = false;
+                                userQuestionService.deleteById(userQuestion.id);
+                            }
+                        } else if (userList.indexOf(userQuestion) == userList.size() - 1 && flag && userQuestion.getQuestion().id != questionList.get(randomId).id) {
+                            flag = false;
                         }
-                    }else if(userList.indexOf(userQuestion)==userList.size()-1 && flag && userQuestion.getQuestion().id == questionList.get(randomId).id){
-                        if(!userQuestion.isWin()){
-                            flag=false;
-                            userQuestionService.deleteById(userQuestion.id);
-                        }
-                    }else if(userList.indexOf(userQuestion)==userList.size()-1&& flag && userQuestion.getQuestion().id != questionList.get(randomId).id){
-                        flag=false;
                     }
                 }
-            }
 
+            }
+            return questionList.get(randomId);
+        } else {
+            return null;
         }
-        return questionList.get(randomId);
     }
 
     @RequestMapping(value = "/disease/{diseaseId}/{userId}", method = RequestMethod.GET)
