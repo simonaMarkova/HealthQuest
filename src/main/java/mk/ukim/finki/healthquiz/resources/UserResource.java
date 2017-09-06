@@ -261,5 +261,44 @@ public class UserResource implements ApplicationContextAware {
 
     }
 
+    @RequestMapping(value = "/update-photo", method = RequestMethod.POST)
+    public void updatePhoto(@RequestBody User user, HttpServletResponse response) throws IOException, SQLException {
+
+        User myUser = userService.findById(user.id);
+        if(myUser!=null && user.getProfileImage() != null && !user.getProfileImage().equals("")) {
+            if(myUser.getProfileImage()!=null ) {
+                File prev = new File(myUser.getProfileImage());
+                prev.delete();
+            }
+
+            byte[] imgbytes = Base64.getMimeDecoder().decode(user.getProfileImage());
+            try {
+                BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imgbytes));
+                String destLocation;
+                if (!new File(fileUploadResource).exists()) {
+                    new File(fileUploadResource).mkdirs();
+                }
+
+                String newNamePart1 = UUID.randomUUID().toString();
+                String newNamePart2 = UUID.randomUUID().toString();
+                String newName = String.format("%s-%s.jpg", newNamePart1, newNamePart2);
+                destLocation = String.format(fileUploadResource + newName);
+
+                File dest = new File(destLocation);
+                ImageIO.write(bufferedImage, "jpg", dest);
+
+                myUser.setProfileImage(destLocation);
+                userService.save(myUser);
+
+            } catch (Exception exc) {
+
+            }
+
+        }
+
+
+    }
+
+
 
 }
