@@ -1,8 +1,8 @@
 package mk.ukim.finki.healthquiz.models;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -10,18 +10,19 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "health_user_question")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserQuestion extends BaseEntity{
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Question.class)
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = QuestionAnswer.class)
     private QuestionAnswer questionAnswer;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = AnswerImage.class)
     private AnswerImage answerImage;
 
     private Date openedAt;

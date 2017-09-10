@@ -1,5 +1,7 @@
 package mk.ukim.finki.healthquiz.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,6 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="health_answer")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Answer extends BaseEntity {
 
     private String description;

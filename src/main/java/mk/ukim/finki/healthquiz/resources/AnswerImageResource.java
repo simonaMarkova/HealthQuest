@@ -125,7 +125,8 @@ public class AnswerImageResource implements ApplicationContextAware {
 
     @RequestMapping(value = "/getByQuestion/{id}", method = RequestMethod.GET)
     public List<AnswerImage> getByQuestionId(@PathVariable Long id) {
-        return service.findByQuestionId(id);
+        List<AnswerImage> list = service.findByQuestionId(id);
+        return list;
     }
 
     @RequestMapping(value = "/getImage/{id}/{number}", method = RequestMethod.GET)

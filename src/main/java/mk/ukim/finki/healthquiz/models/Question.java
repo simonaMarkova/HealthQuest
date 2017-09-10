@@ -1,5 +1,6 @@
 package mk.ukim.finki.healthquiz.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import mk.ukim.finki.healthquiz.enumeration.*;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="health_question")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Question extends BaseEntity {
 
     @ManyToOne

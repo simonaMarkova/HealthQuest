@@ -9,7 +9,6 @@ import javax.persistence.MappedSuperclass;
 
 
 @MappedSuperclass
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseEntity {
 
     @Id

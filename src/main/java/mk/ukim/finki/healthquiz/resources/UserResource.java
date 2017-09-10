@@ -300,5 +300,11 @@ public class UserResource implements ApplicationContextAware {
     }
 
 
+    @RequestMapping(value = "/points/{id}", method = RequestMethod.GET)
+    public int getPoints(@PathVariable Long id) {
+        User user = userService.findById(id);
+        return user.getPoints();
+    }
+
 
 }

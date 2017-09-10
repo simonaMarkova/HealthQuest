@@ -1,5 +1,7 @@
 package mk.ukim.finki.healthquiz.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name="health_disease")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Disease extends BaseEntity {
 
     private String name;

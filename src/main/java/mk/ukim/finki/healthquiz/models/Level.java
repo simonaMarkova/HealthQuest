@@ -1,15 +1,20 @@
 package mk.ukim.finki.healthquiz.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.persistence.*;
 
 /**
  * Created by Simona on 19.04.2017.
  */
 @Entity
 @Table(name = "health_level")
-public class Level extends BaseEntity{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Level{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long id;
 
     @Column(name="level", unique=true)
     private int level;

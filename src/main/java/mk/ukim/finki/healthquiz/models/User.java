@@ -1,5 +1,7 @@
 package mk.ukim.finki.healthquiz.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 
 /**
@@ -7,7 +9,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="health_user")
-public class User extends BaseEntity{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class User{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long id;
 
     private String username;
 
@@ -22,7 +29,7 @@ public class User extends BaseEntity{
     @Transient
     private Integer points = 0;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Level.class)
     private Level level;
 
     private String profileImage;
@@ -100,4 +107,5 @@ public class User extends BaseEntity{
     public void setFacebookAccount(Boolean facebookAccount) {
         this.facebookAccount = facebookAccount;
     }
+
 }
