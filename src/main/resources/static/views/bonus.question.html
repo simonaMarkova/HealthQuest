@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Бонус Прашања</h1>
+
+    <form ng-submit="vm8.save()">
+        <div class="form-group">
+            <label>Прашање</label>
+            <input class="form-control"
+                   type="text"
+                   ng-required="true"
+                   ng-model="vm8.question.question">
+        </div>
+
+        <div class="form-group">
+            <label>Одговори</label>
+
+            <table class="table table-bordered table-striped">
+                <tr ng-repeat="e in vm8.possibleAnswers track by $index">
+                    <td>
+                        <input ng-model='vm8.answers[$index]' type="checkbox" value="{{ e.id }}">{{e.description}}</input>
+                    </td>
+                    <td>
+                        <input ng-model='vm8.answerStatus[$index]' type="checkbox">Точен одговор</input>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <br/>
+        <input class="btn btn-primary" type="submit" value="Внеси">
+    </form>
+
+    <br/>
+
+
+    <table ng-show="vm8.questions.length>0" class="table table-bordered table-striped">
+        <tr>
+            <th>Прашање</th>
+            <th>Одговори</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="e in vm8.questions | startFrom:vm8.currentPage*vm.pageSize | limitTo:vm8.pageSize" ng-show="e.questionType=='BONUS'">
+            <td style="max-width: 400px">{{e.question}}</td>
+            <td>
+                <p ng-repeat="i in vm8.myAnswers" ng-show="i.question.id==e.id">
+                    {{i.answer.description}} -
+                    <span ng-show="i.status==true">Точен одговор</span>
+                    <span ng-show="i.status==false">Неточен одговор</span>
+                </p>
+            </td>
+            <td>
+                <button class="btn btn-xs btn-default"
+                        ng-click="vm8.edit(e)">
+                    Измени
+                </button>
+                <button class="btn btn-xs btn-danger"
+                        ng-click="vm8.remove(e)">
+                    Отстрани
+                </button>
+            </td>
+        </tr>
+
+
+    </table>
+    <div style="text-align: center" ng-show="vm8.questions.length>0">
+
+        <ul class="pagination">
+            <li ng-class="{disabled:vm8.currentPage === 0}">
+                <a ng-click="vm8.currentPage=0">First</a>
+            </li>
+            <li ng-class="{disabled:vm8.currentPage === 0}">
+                <a ng-click="vm8.currentPage=vm8.currentPage-1">Previous</a>
+            </li>
+            <li ng-repeat="page in vm8.loadPages()" ng-class="{active:vm8.currentPage === page}">
+                <a ng-click="vm8.currentPage=page">{{page + 1}}</a>
+            </li>
+            <li ng-class="{disabled:vm8.currentPage === vm8.numberOfPages()-1}">
+                <a ng-click="vm8.currentPage=vm8.currentPage+1">Next</a>
+            </li>
+            <li ng-class="{disabled:vm8.currentPage === vm8.numberOfPages()-1}">
+                <a ng-click="vm8.currentPage=vm8.numberOfPages()-1">Last</a>
+            </li>
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -57,7 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
     public void deleteById(Long id) {
         int flag = 0;
         Question question = questionRepository.findOne(id);
-        if(question.getQuestionType() == QuestionType.ANSWER_SELECT)
+        if(question.getQuestionType() == QuestionType.ANSWER_SELECT || question.getQuestionType() == QuestionType.BONUS)
         {
             List<QuestionAnswer> list = questionAnswerRepository.findByQuestionId(id);
             for (QuestionAnswer q: list)

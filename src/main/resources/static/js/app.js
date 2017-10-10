@@ -38,6 +38,10 @@ app.config(function($routeProvider){
             templateUrl:'/views/answer.image.html',
             controller:'answerImageController',
             controllerAs:'vm7'
+        }).when('/bonus', {
+            templateUrl:'/views/bonus.question.html',
+            controller:'bonusQuestionController',
+            controllerAs:'vm8'
         })
         .otherwise({
             redirectTo: '/'

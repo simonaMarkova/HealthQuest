@@ -60,7 +60,7 @@ public class UserResource implements ApplicationContextAware {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public User registerUser(@RequestBody User user, HttpServletResponse response) {
         if (user != null) {
-            User myUser = userService.findByUsername(user.getUsername());
+            User myUser = userService.findByEmail(user.getEmail());
             if (myUser != null) {
                 response.setStatus(HttpStatus.CONFLICT.value());
                 return null;
@@ -104,7 +104,7 @@ public class UserResource implements ApplicationContextAware {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public User login(@RequestBody LoginInfo loginInfo, HttpServletResponse response) {
-        User user = userService.findByUsername(loginInfo.getUsername());
+        User user = userService.findByEmail(loginInfo.getEmail());
         if (user != null) {
             if (user.getPassword() == null) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -301,7 +301,7 @@ public class UserResource implements ApplicationContextAware {
 
 
     @RequestMapping(value = "/points/{id}", method = RequestMethod.GET)
-    public int getPoints(@PathVariable Long id) {
+    public Integer getPoints(@PathVariable Long id) {
         User user = userService.findById(id);
         return user.getPoints();
     }

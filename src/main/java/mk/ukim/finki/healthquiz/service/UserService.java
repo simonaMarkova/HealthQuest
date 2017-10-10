@@ -13,6 +13,5 @@ public interface UserService {
     User save(User entity);
     void update(Long id, User entity);
     void deleteById(Long id);
-    User findByUsername(String username);
     User findByEmail(String email);
 }

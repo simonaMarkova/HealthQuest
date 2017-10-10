@@ -70,9 +70,10 @@ public class UserServiceImpl implements UserService{
         userRepository.delete(id);
     }
 
+
     @Override
-    public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
         if(user != null){
             if (userQuestionRepository.findByUserId(user.id).size() == 0) {
                 user.setPoints(0);
@@ -82,11 +83,6 @@ public class UserServiceImpl implements UserService{
             }
         }
         return user;
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 
 }
