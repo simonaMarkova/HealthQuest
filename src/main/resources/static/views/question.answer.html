@@ -50,7 +50,13 @@
                 </table>
             </div>
 
-
+            <div class="form-group">
+                <label>Опис при неточен одговор:</label>
+                <input class="form-control"
+                       type="text"
+                       ng-required="true"
+                       ng-model="vm.question.incorrectDescription">
+            </div>
             <br/>
             <input class="btn btn-primary" type="submit" value="Внеси">
         </form>
@@ -64,6 +70,7 @@
                 <th>Ниво</th>
                 <th>Болест</th>
                 <th>Одговори</th>
+                <th>Објаснување</th>
                 <th></th>
             </tr>
             <tr ng-repeat="e in vm.questions | startFrom:vm.currentPage*vm.pageSize | limitTo:vm.pageSize" ng-show="e.questionType=='ANSWER_SELECT'">
@@ -77,6 +84,7 @@
                         <span ng-show="i.status==false">Неточен одговор</span>
                     </p>
                 </td>
+                <td>{{e.incorrectDescription}}</td>
                 <td>
                     <button class="btn btn-xs btn-default"
                             ng-click="vm.edit(e)">

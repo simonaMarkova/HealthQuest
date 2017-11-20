@@ -47,7 +47,7 @@
             <th>Одговори</th>
             <th></th>
         </tr>
-        <tr ng-repeat="e in vm8.questions | startFrom:vm8.currentPage*vm.pageSize | limitTo:vm8.pageSize" ng-show="e.questionType=='BONUS'">
+        <tr ng-repeat="e in vm8.questions | startFrom:vm8.currentPage*vm8.pageSize | limitTo:vm8.pageSize" ng-show="e.questionType=='BONUS'">
             <td style="max-width: 400px">{{e.question}}</td>
             <td>
                 <p ng-repeat="i in vm8.myAnswers" ng-show="i.question.id==e.id">

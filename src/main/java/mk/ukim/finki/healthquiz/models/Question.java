@@ -19,6 +19,8 @@ public class Question extends BaseEntity {
 
     private String question;
 
+    private String incorrectDescription;
+
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
@@ -58,4 +60,11 @@ public class Question extends BaseEntity {
         this.questionType = questionType;
     }
 
+    public String getIncorrectDescription() {
+        return incorrectDescription;
+    }
+
+    public void setIncorrectDescription(String incorrectDescription) {
+        this.incorrectDescription = incorrectDescription;
+    }
 }

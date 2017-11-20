@@ -66,7 +66,13 @@
                 </tr>
             </table>
         </div>
-
+        <div class="form-group">
+            <label>Опис при неточен одговор:</label>
+            <input class="form-control"
+                   type="text"
+                   ng-required="true"
+                   ng-model="vm7.question.incorrectDescription">
+        </div>
         <br/>
         <input class="btn btn-primary" type="submit" value="Внеси">
     </form>
@@ -79,6 +85,7 @@
             <th>Ниво</th>
             <th>Болест</th>
             <th>Слики</th>
+            <th>Објаснување</th>
             <th></th>
         </tr>
         <tr ng-repeat="e in vm7.questions | startFrom:vm7.currentPage*vm7.pageSize | limitTo:vm7.pageSize" ng-show="e.questionType=='MULTIPLE_IMAGE_SELECT'">
@@ -92,6 +99,7 @@
                     <span ng-show="i.status==false">Неточен одговор</span>
                 </p>
             </td>
+            <td>{{e.incorrectDescription}}</td>
             <td>
                 <button class="btn btn-xs btn-default"
                         ng-click="vm7.edit(e)">
