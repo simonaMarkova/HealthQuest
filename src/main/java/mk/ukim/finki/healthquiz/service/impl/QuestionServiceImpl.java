@@ -136,5 +136,10 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findByDiseaseId(id);
     }
 
+    @Override
+    public List<Question> getAllBonusQuestions() {
+        return questionRepository.findByQuestionType(QuestionType.BONUS);
+    }
+
 
 }

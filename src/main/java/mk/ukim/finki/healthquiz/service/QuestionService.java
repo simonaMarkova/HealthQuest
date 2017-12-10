@@ -25,4 +25,6 @@ public interface QuestionService {
     List<Question> findByLevelId(Long id);
 
     List<Question> findByDiseaseId(Long id);
+
+    List<Question> getAllBonusQuestions();
 }

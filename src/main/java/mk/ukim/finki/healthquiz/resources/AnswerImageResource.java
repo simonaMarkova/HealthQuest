@@ -58,14 +58,10 @@ public class AnswerImageResource implements ApplicationContextAware {
 
         String url = service.savePicture(file);
         List<AnswerImage> answerImages = service.findByQuestionId(id);
-        if(answerImages.size() != 0)
-        {
-            for(AnswerImage a : answerImages)
-            {
-                if(a.number == number)
-                {
-                    if(a.imageUrl != null)
-                    {
+        if(answerImages.size() != 0) {
+            for(AnswerImage a : answerImages) {
+                if(a.number == number) {
+                    if(a.imageUrl != null) {
                         File f = new File(a.imageUrl);
                         f.delete();
                     }
@@ -76,8 +72,7 @@ public class AnswerImageResource implements ApplicationContextAware {
                 }
             }
         }
-        else
-        {
+        else {
             AnswerImage answerImage = new AnswerImage();
             answerImage.question = question;
             answerImage.imageUrl = url;
@@ -87,10 +82,7 @@ public class AnswerImageResource implements ApplicationContextAware {
             flag = 1;
         }
 
-
-
-        if(flag == 0)
-        {
+        if(flag == 0) {
             AnswerImage answerImage = new AnswerImage();
             answerImage.question = question;
             answerImage.imageUrl = url;
@@ -98,9 +90,6 @@ public class AnswerImageResource implements ApplicationContextAware {
             answerImage.number = number;
             service.insert(answerImage);
         }
-
-
-
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -148,10 +137,8 @@ public class AnswerImageResource implements ApplicationContextAware {
                     byte fileContent[] = new byte[(int)file.length()];
 
                     try {
-
                         in = new FileInputStream(file);
                         out = response.getOutputStream();
-
 
                         in.read(fileContent);
                         ByteArrayInputStream bin = new ByteArrayInputStream(fileContent);
@@ -161,7 +148,6 @@ public class AnswerImageResource implements ApplicationContextAware {
                         response.setContentLength((int) file.length());
 
                         IOUtils.copy(bin, out);
-
                     }
                     catch (IOException e) {
 
@@ -178,10 +164,6 @@ public class AnswerImageResource implements ApplicationContextAware {
                     }
                 }
             }
-
         }
-
-
     }
-
 }
